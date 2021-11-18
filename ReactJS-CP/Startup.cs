@@ -2,9 +2,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReactJS_CP.Models;
+using ReactJS_CP.Repositories;
 
 namespace ReactJS_CP
 {
@@ -20,6 +23,9 @@ namespace ReactJS_CP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            //add link to db here - PS
+            services.AddDbContext<InvoiceContext>(o => o.UseSqlite("Data source = invoicer.db"));
 
             services.AddControllersWithViews();
 

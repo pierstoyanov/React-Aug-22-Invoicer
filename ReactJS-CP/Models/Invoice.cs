@@ -7,7 +7,8 @@ namespace ReactJS_CP.Models
 {
     public class Invoice
     {
-        public int InvoiceId { get; set; }
+        public int Id { get; set; }
+        public string InvoiceId { get; set; }
         public int Number { get; set; }
         public DateTime WhenCreated { get; set; }
         public int IssuerId { get; set; }
