@@ -1,6 +1,6 @@
 # Invoice R
 
-## **Course project for: SoftUni ReactJS - nov 2021**
+## **Course project for: _SoftUni ReactJS - nov 2021_**
 
 ### Invoice R is a an app to create and manage invoices and company data.
 
