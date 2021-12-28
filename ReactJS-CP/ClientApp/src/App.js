@@ -6,6 +6,7 @@ import { FetchData } from './components/FetchData';
 import { Counter } from './components/Counter';
 import CreateInvoice from './components/CreateInvoice';
 
+import 'bootstrap/dist/css/bootstrap.css';
 import './custom.css'
 
 export default class App extends Component {

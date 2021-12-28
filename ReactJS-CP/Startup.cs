@@ -64,10 +64,10 @@ namespace ReactJS_CP
             options.TokenValidationParameters = new TokenValidationParameters()
             {
                 ValidateIssuer = true,
-                /*ValidateAudience = true,
+                ValidateAudience = true,
                 ValidAudience = Configuration["JWT:ValidAudience"],
                 ValidIssuer = Configuration["JWT:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))*/
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))
             };
             });
 
