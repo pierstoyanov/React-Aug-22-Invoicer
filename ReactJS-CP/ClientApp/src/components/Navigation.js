@@ -10,18 +10,20 @@ function Navigation() {
 
 
     let defaultNav = (
-        <div id="guest">
+        <Nav id="guest">
             <Nav.Link href="/register">Register</Nav.Link>
             <Nav.Link href="/login">Login</Nav.Link>
-        </div>
+        </Nav>
     );
 
-    let loggenInNav = (
-        <div id="user">
-            <span>Welcome, {user.email}</span>
+    let loggedInNav = (
+        <Nav id="loggedInNav">
+            <Navbar.Text>
+                Welcome, {user.email}
+            </Navbar.Text>
             <Nav.Link href="/logout">Logout</Nav.Link>
-        </div>
-    );
+        </Nav>
+        );
 
     return (
         <Container>
@@ -32,15 +34,10 @@ function Navigation() {
 
 
                     {user.email
-                        ? defaultNav
-                        : loggenInNav
+                        ? loggedInNav
+                        : defaultNav
                     }
 
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href="/register">Register</Nav.Link>
-                            <Nav.Link href="/login">Login</Nav.Link>
-                        
 
                             {/* //TODO
                              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
@@ -50,8 +47,7 @@ function Navigation() {
     <NavDropdown.Divider />
     <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
     </NavDropdown> */}
-                        </Nav>
-                    </Navbar.Collapse>
+
                 </Container>
             </Navbar>
         </Container>

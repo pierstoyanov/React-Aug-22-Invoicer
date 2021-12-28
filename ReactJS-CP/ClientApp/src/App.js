@@ -1,9 +1,13 @@
 import { Route, Routes } from 'react-router';
 
 import { AuthProvider } from './contexts/AuthContext';
+//Firebase
+import { app } from './firebase-config';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 
 
 import Navigation from './components/Navigation';
+import GuardedRoute from './components/Common/GuardedRoute'
 import Home from './components/Home';
 import Register from './components/Register';
 import Login from './components/Login';

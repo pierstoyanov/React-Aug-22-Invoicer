@@ -1,7 +1,7 @@
-const baseUrl = 'https://localhost:5001';
+const baseUrl = 'https://localhost:7013';
 
 export const login = async (email, password) => {
-    let res = await fetch(`${baseUrl}/Authenticate/login`, {
+    let res = await fetch(`${baseUrl}/authentication/login`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -18,8 +18,8 @@ export const login = async (email, password) => {
     }
 };
 
-export const register = ( email, password, username = "",) => {
-    return fetch(`${baseUrl}/Authenticate/register`, {
+export const register = ( email, password, username = "" ) => {
+    return fetch(`${baseUrl}/authentication/register`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -30,7 +30,7 @@ export const register = ( email, password, username = "",) => {
 };
 
 export const logout = (token) => {
-    return fetch(`${baseUrl}/users/logout`, {
+    return fetch(`${baseUrl}/authentication/logout`, {
         headers: {
             'X-Authorization': token,
         }
