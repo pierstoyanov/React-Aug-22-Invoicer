@@ -52,7 +52,8 @@ namespace ReactJS_CP.Controllers
             return NoContent();
         }
 
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteInvoice(int id)
         {
             var InvoiceToDelete = await this.invoiceRepository.Get(id);
             if (InvoiceToDelete == null)

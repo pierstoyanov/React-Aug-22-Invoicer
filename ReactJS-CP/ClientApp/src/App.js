@@ -15,10 +15,10 @@ export default class App extends Component {
     return (
         <Layout>
         <Routes>
-                <Route exact path='/' element={<Home />} />
-                <Route path='make' element={<CreateInvoice />} />
-                <Route path='counter' element={<Counter />} />
-                <Route path='fetch-data' element={<FetchData />} />
+            <Route exact path='/' element={<Home />} />
+            <Route path='make' element={<CreateInvoice />} />
+            <Route path='counter' element={<Counter />} />
+            <Route path='fetch-data' element={<FetchData />} />
         </Routes>
       </Layout>
     );
