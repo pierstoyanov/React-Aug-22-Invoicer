@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReactJS_CP.Models;
 using ReactJS_CP.Repositories;
+using ReactJS_CP.Data;
 
 namespace ReactJS_CP
 {
@@ -24,8 +25,9 @@ namespace ReactJS_CP
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            
             //add link to db here - PS
-            services.AddDbContext<InvoiceContext>(o => o.UseSqlite("Data source = invoicer.db"));
+            services.AddDbContext<DataContext>(o => o.UseSqlite("Data source = invoicer.db"));
 
             services.AddControllersWithViews();
 
@@ -34,6 +36,12 @@ namespace ReactJS_CP
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen();
+
+            //services.AddDbContext<ReactJS_CPContext>(options =>
+                    //options.UseSqlServer(Configuration.GetConnectionString("ReactJS_CPContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +50,12 @@ namespace ReactJS_CP
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.)
+                app.UseSwaggerUI();
             }
             else
             {

@@ -8,9 +8,9 @@ namespace ReactJS_CP.Repositories
 {
     public class InvoiceRepository : IInvoiceRepository
     {
-        private readonly InvoiceContext _context;
+        private readonly DataContext _context;
         
-        public InvoiceRepository(InvoiceContext context)
+        public InvoiceRepository(DataContext context)
         {
             _context = context;
         }
