@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReactJS_CP.Models;
+using ReactJS_CP.Data;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,9 +9,9 @@ namespace ReactJS_CP.Repositories
 {
     public class InvoiceRepository : IInvoiceRepository
     {
-        private readonly DataContext _context;
+        private readonly ApplicationDbContext _context;
         
-        public InvoiceRepository(DataContext context)
+        public InvoiceRepository(ApplicationDbContext context)
         {
             _context = context;
         }

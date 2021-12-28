@@ -1,107 +1,66 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using ReactJS_CP.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ReactJS_CP.Data;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ReactJS_CP.Models;
 
-namespace ReactJS_CP.Models
+namespace ReactJS_CP.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class AccountantController : ControllerBase
     {
-        private readonly ReactJS_CPContext _context;
+        public readonly IAccountantRepository accountantRepository;
 
-        public AccountantController(ReactJS_CPContext context)
+        public AccountantController(IAccountantRepository accountantRepository)
         {
-            _context = context;
+            this.accountantRepository = accountantRepository;
         }
 
-        // GET: api/Accountant
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Accountant>>> GetAccountant()
+        public async Task<IEnumerable<Accountant>> GetAccountant()
         {
-            return await _context.Accountant.ToListAsync();
+            /*This will convert Invoice to JSON before retruning it to caller*/
+            return await this.accountantRepository.Get();
         }
 
-        // GET: api/Accountant/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Accountant>> GetAccountant(int id)
         {
-            var accountant = await _context.Accountant.FindAsync(id);
-
-            if (accountant == null)
-            {
-                return NotFound();
-            }
-
-            return accountant;
+            return await this.accountantRepository.Get(id);
         }
 
-        // PUT: api/Accountant/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAccountant(int id, Accountant accountant)
+        [HttpPost]
+        public async Task<ActionResult> PostAccountant([FromBody] Accountant item)
         {
-            if (id != accountant.Id)
+            /*Convert json to invoice object*/
+            var newItem = await this.accountantRepository.Create(item);
+            return CreatedAtAction(nameof(GetAccountant), new {id = newItem.Id});
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateInvoice(int id, [FromBody] Accountant item)
+        {
+            if (id != item.Id)
             {
+                /* check if url id == payload id*/
                 return BadRequest();
             }
 
-            _context.Entry(accountant).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountantExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await this.accountantRepository.Update(item);
             return NoContent();
         }
 
-        // POST: api/Accountant
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Accountant>> PostAccountant(Accountant accountant)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAccountant(int id)
         {
-            _context.Accountant.Add(accountant);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetAccountant", new { id = accountant.Id }, accountant);
-        }
-
-        // DELETE: api/Accountant/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAccountant(int id)
-        {
-            var accountant = await _context.Accountant.FindAsync(id);
-            if (accountant == null)
-            {
+            var InvoiceToDelete = await this.accountantRepository.Get(id);
+            if (InvoiceToDelete == null)
                 return NotFound();
-            }
 
-            _context.Accountant.Remove(accountant);
-            await _context.SaveChangesAsync();
-
+            await this.accountantRepository.Delete(id);
             return NoContent();
-        }
-
-        private bool AccountantExists(int id)
-        {
-            return _context.Accountant.Any(e => e.Id == id);
         }
     }
 }

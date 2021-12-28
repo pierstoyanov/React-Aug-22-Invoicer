@@ -9,6 +9,12 @@ using Microsoft.Extensions.Hosting;
 using ReactJS_CP.Models;
 using ReactJS_CP.Repositories;
 using ReactJS_CP.Data;
+using ReactJS_CP.IdentityAuth;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
 
 namespace ReactJS_CP
 {
@@ -24,10 +30,11 @@ namespace ReactJS_CP
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            services.AddScoped<IAccountantRepository, AccountantRepository>();
             
             //add link to db here - PS
-            services.AddDbContext<DataContext>(o => o.UseSqlite("Data source = invoicer.db"));
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseSqlite("Data source = invoicer.db"));
 
             services.AddControllersWithViews();
 
@@ -37,11 +44,71 @@ namespace ReactJS_CP
                 configuration.RootPath = "ClientApp/build";
             });
 
-            // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen();
+            // For Identity
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            //services.AddDbContext<ReactJS_CPContext>(options =>
-                    //options.UseSqlServer(Configuration.GetConnectionString("ReactJS_CPContext")));
+            // Adding Authentication
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+            // Adding Jwt Bearer
+            .AddJwtBearer(options =>
+            {
+            options.SaveToken = true;
+            options.RequireHttpsMetadata = false;
+            options.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                /*ValidateAudience = true,
+                ValidAudience = Configuration["JWT:ValidAudience"],
+                ValidIssuer = Configuration["JWT:ValidIssuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:SecretKey"]))*/
+            };
+            });
+
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(swagger =>
+            {
+                swagger.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "ASP.NET 5 Web API",
+                    Description = "Authentication and Authorization"
+                });
+       
+                // To Enable authorization using Swagger (JWT)
+                swagger.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter 'Bearer' [space] and then your valid token in the text input below."
+                });
+
+                swagger.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                        },
+                        new string[] {}
+                }
+                });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,6 +136,9 @@ namespace ReactJS_CP
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
