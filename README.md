@@ -8,8 +8,6 @@
 
 ### ClientApp: ReactJS
 
-### Server: ASP.net Core 6.0
-
 ### Client side structure:
 
 - [ ] User-profiles	
