@@ -13,10 +13,19 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const pages = ['Login', 'Register', 'About'];
-const settings = ['Profile', 'Account', 'Dashboard', 'INVOICERut'];
+const userSettings = [
+  { 
+    item:'Profile', 
+    handler: handleProfile
+  }, 
+  {
+    item: 'Logout',
+    handler: handleLogout
+  }
+  ];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -36,6 +45,14 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('Auth Token');
+    navigate('/login');
+  }
+
 
   return (
     <AppBar position="static">
@@ -57,7 +74,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            INVOICER
+            INVOICER 
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -124,7 +141,7 @@ const ResponsiveAppBar = () => {
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                <Link to={`/${page}`}>{page}</Link>
+              <Link to={`/${page}`}>{page}</Link>
               </Button>
             ))}
           </Box>
@@ -151,9 +168,9 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {userSettings.map((setting) => (
+                <MenuItem key={setting.item} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center" onClick={setting.handler()}>{setting.item}</Typography>
                 </MenuItem>
               ))}
             </Menu>

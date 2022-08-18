@@ -7,18 +7,15 @@ import FormControl from '@mui/material/FormControl';
 //import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
-import { useParams } from 'react-router-dom'
 import LoginButton from './LoginButton';
 
-const LoginForm = () => {
+const ProfileForm = ({ title, setEmail, setPassword, handleAction }) => {
 
-  const { title } = useParams();
-  
-  
+
   return (
     <><div className="heading-container">
       <h3>
-        {title}
+        {title} Page
       </h3>
     </div>
     
@@ -30,24 +27,30 @@ const LoginForm = () => {
       sx={{ '& > :not(style)': { m: 1 } }}>
 
         <FormControl variant="outlined">
-          <InputLabel htmlFor="username-input">Username</InputLabel>
-          <Input id="username-input"
+          <InputLabel htmlFor="email">Username</InputLabel>
+          <Input id="email"
             startAdornment={<InputAdornment position="start">
               <AccountCircle />
-            </InputAdornment>} />
+              </InputAdornment>}
+            placeholder="Please enter your email or username"
+            onChange={(e) => setEmail(e.target.value)}
+            />
         </FormControl>
 
         <FormControl variant='outlined'>
-          <InputLabel htmlFor="password-input">Password</InputLabel>
-          <Input id="password-input"
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input id="password"
             startAdornment={<InputAdornment position="start">
               <AccountCircle />
-            </InputAdornment>} />
+            </InputAdornment>} 
+            placeholder="Please enter your password"
+            onChange={(e) => setPassword(e.target.value)}
+            />
         </FormControl>
 
-        <LoginButton title={title} />
+        <LoginButton title={title} handleAction={handleAction} />
       </Box></>
   );
 }
 
-export default LoginForm;
+export default ProfileForm;
