@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Homepage = () => {
+const Homepage = ({handleLogout}) => {
     let navigate = useNavigate();
 
     useEffect(() => {
@@ -15,6 +15,8 @@ const Homepage = () => {
             navigate('/Homepage');
         }
     }, [])
+
+
 
     return (
         <div>

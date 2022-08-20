@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 //React imports
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 //Firebase imports
@@ -13,24 +13,26 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //Components
-import ResponsiveAppBar from './components/common/ResponsiveAppBar';
-import ProfileForm from './components/common/ProfileForm';
-import About from './components/About';
-import Homepage from './components/Homepage';
+import ResponsiveAppBar from './components/common/ResponsiveAppBar/ResponsiveAppBar';
+import ProfileForm from './components/common/ProfileForm/ProfileForm';
+import About from './components/About/About';
+import Homepage from './components/Homepage/Homepage';
 
 function App() {
 
+  const Context = React.createContext(defaultValue);
+  
   //Auth
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
 
-  const handleAction = (id) => {
+  const handleUserEntry = (id) => {
     console.log(id);
     const authentication = getAuth();
 
     if (id === 1) {
       signInWithEmailAndPassword(authentication, email, password)
-        .then((res) => {
+        .then((response) => {
           navigate('/Homepage');
           sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
         })
@@ -58,7 +60,13 @@ function App() {
         }
       })
     }
+
     navigate('/home');
+  }
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('Auth Token');
+    navigate('/login');
   }
 
   useEffect(() => {
@@ -71,6 +79,7 @@ function App() {
   }, [])
 
 
+
   //Routing
   const navigate = useNavigate();
 
@@ -79,7 +88,7 @@ function App() {
 
     {/* <header className="App-header"> */}
     <header>
-      <ResponsiveAppBar />
+      <ResponsiveAppBar handleLogout = {handleLogout}/>
     </header>
     
     <main>
@@ -90,7 +99,7 @@ function App() {
              title="Login"
              setEmail = {setEmail}
              setPassword = {setPassword}
-             handleAction={() => handleAction(1)} 
+             handleAction={() => handleUserEntry(1)} 
             />} 
           />
         <Route path="/Register" 
@@ -98,7 +107,7 @@ function App() {
               title="Register"
               setEmail={setEmail}
               setPassword={setPassword}
-              handleAction={() => handleAction(2)}
+              handleAction={() => handleUserEntry(2)}
             />} 
           />
         <Route path="/About" element={<About />} />

@@ -8,9 +8,9 @@ import FormControl from '@mui/material/FormControl';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
 import LoginButton from './LoginButton';
+import BoxStyled from './profileForm.styles';
 
-const ProfileForm = ({ title, setEmail, setPassword, handleAction }) => {
-
+const ProfileForm = ({ title, setEmail, setPassword, handleAction: HandleUserEntry }) => {
 
   return (
     <><div className="heading-container">
@@ -18,14 +18,12 @@ const ProfileForm = ({ title, setEmail, setPassword, handleAction }) => {
         {title} Page
       </h3>
     </div>
-    
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignmentItems="center"
-      sx={{ '& > :not(style)': { m: 1 } }}>
-
+    <Box 
+      sx={{ '& > :not(style)': { m: 1, display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignmentItems: "center"} }}>
+    {/* //<BoxStyled> */}
         <FormControl variant="outlined">
           <InputLabel htmlFor="email">Username</InputLabel>
           <Input id="email"
@@ -48,8 +46,10 @@ const ProfileForm = ({ title, setEmail, setPassword, handleAction }) => {
             />
         </FormControl>
 
-        <LoginButton title={title} handleAction={handleAction} />
-      </Box></>
+        <LoginButton title={title} handleAction={HandleUserEntry} />
+      {/* //</BoxStyled> */}
+      </Box>
+      </>
   );
 }
 
