@@ -1,8 +1,7 @@
 // import * as React from 'react';
 import Button from '@mui/material/Button';
 
-export default function LoginButton({title, handleAction: handleUserEntry}) {
-    
+export default function LoginButton({ title, handleUserEntry }) {
     
     return (
         <Button 

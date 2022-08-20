@@ -15,12 +15,15 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button';
 import UserMenu from './UserMenu';
+import { useUserAuth } from '../../../Contexts/UserAuthContext';
 
 const pages = ['Login', 'Register', 'About'];
 
-const ResponsiveAppBar = ({handleLogout}) => {
+const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-
+  const { logOut, user } = useUserAuth();
+  const navigate = useNavigate();
+  // const userLoggedIn = sessionStorage.getItem('Auth Token')
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,9 +33,14 @@ const ResponsiveAppBar = ({handleLogout}) => {
     setAnchorElNav(null);
   };
 
-  const userLoggedIn = sessionStorage.getItem('Auth Token')
-
-  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await logOut();
+      navigate("/About");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <AppBar position="static">
@@ -126,7 +134,7 @@ const ResponsiveAppBar = ({handleLogout}) => {
             ))}
           </Box>
 
-          {userLoggedIn ? <UserMenu navigate={navigate} handleLogout={handleLogout}/> : <div></div>}
+          {user ? <UserMenu navigate={navigate} handleLogout={handleLogout}/> : null}
 
         </Toolbar>
       </Container>

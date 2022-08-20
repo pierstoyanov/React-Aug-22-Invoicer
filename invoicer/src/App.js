@@ -5,78 +5,39 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 //Firebase imports
-import { app, analytics } from './Config/firebase.config'
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+// import { app, analytics } from './Config/firebase.config'
+// import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { UserAuthContextProvider } from './Contexts/UserAuthContext';
+
 
 //Messages
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 //Components
-import ResponsiveAppBar from './components/common/ResponsiveAppBar/ResponsiveAppBar';
-import ProfileForm from './components/common/ProfileForm/ProfileForm';
+import ResponsiveAppBar from './components/Common/ResponsiveAppBar/ResponsiveAppBar';
+import ProfileForm from './components/Common/ProfileForm/ProfileForm';
 import About from './components/About/About';
 import Homepage from './components/Homepage/Homepage';
 
 function App() {
 
-  const Context = React.createContext(defaultValue);
-  
   //Auth
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('')
 
-  const handleUserEntry = (id) => {
-    console.log(id);
-    const authentication = getAuth();
 
-    if (id === 1) {
-      signInWithEmailAndPassword(authentication, email, password)
-        .then((response) => {
-          navigate('/Homepage');
-          sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
-        })
-        .catch((error) => {
-          //console.log(error);
-          if(error.code === 'auth/wrong-password'){
-            toast.error('Password is incorrect');
-          }
-          if(error.code === 'auth/user-not-found'){
-            toast.error('Email is incorrect');
-          }   
-        })
-    }
+  // const handleLogout = () => {
+  //   sessionStorage.removeItem('Auth Token');
+  //   navigate('/login');
+  // }
 
-    if (id === 2) {
-      createUserWithEmailAndPassword(authentication, email, password)
-      .then((response) => {
-        //console.log(response));
-        sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken);
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.code === 'auth/email-already-in-use') {
-          toast.error('This email is allready registered');
-        }
-      })
-    }
+  // useEffect(() => {
+  //   let authToken = sessionStorage.getItem('Auth Token');
 
-    navigate('/home');
-  }
+  //   if (authToken) {
+  //       navigate('/Homepage');
+  //   }
 
-  const handleLogout = () => {
-    sessionStorage.removeItem('Auth Token');
-    navigate('/login');
-  }
-
-  useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token');
-
-    if (authToken) {
-        navigate('/Homepage');
-    }
-
-  }, [])
+  // }, [])
 
 
 
@@ -88,38 +49,30 @@ function App() {
 
     {/* <header className="App-header"> */}
     <header>
-      <ResponsiveAppBar handleLogout = {handleLogout}/>
+      {/* handleLogout = {handleLogout} */}
+      <ResponsiveAppBar />
     </header>
     
     <main>
+      <UserAuthContextProvider>
       <Routes>
-        <Route 
-          path="/Login" 
+        <Route path="/Login" 
           element={<ProfileForm
-             title="Login"
-             setEmail = {setEmail}
-             setPassword = {setPassword}
-             handleAction={() => handleUserEntry(1)} 
+            title="Login"
+            action='login' 
             />} 
-          />
+        />
         <Route path="/Register" 
-          element={<ProfileForm 
-              title="Register"
-              setEmail={setEmail}
-              setPassword={setPassword}
-              handleAction={() => handleUserEntry(2)}
+          element={<ProfileForm
+            title="Register"
+            action='register'
             />} 
           />
         <Route path="/About" element={<About />} />
         <Route path="/Homepage" element={<Homepage />} />
       
       </Routes>
-      
-
-    {/* <Link to="/">Home</Link>
-    <Link to="/login">Login</Link>
-    <LoginForm /> */}
-
+      </UserAuthContextProvider>
 
       <img src={logo} className="App-logo" alt="logo" />
       <p>

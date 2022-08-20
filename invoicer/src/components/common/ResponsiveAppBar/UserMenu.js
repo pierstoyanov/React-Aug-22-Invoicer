@@ -1,13 +1,8 @@
 import React from "react"
-import ResponsiveAppBar from "./ResponsiveAppBar"
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip  from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
@@ -36,7 +31,6 @@ const UserMenu = ({navigate, handleLogout}) => {
     const handleLogoutNavbar = () => {
         handleCloseUserMenu()
         handleLogout()
-        navigate('/Register')
     }
 
     const handleOpenUserMenu = (event) => {
