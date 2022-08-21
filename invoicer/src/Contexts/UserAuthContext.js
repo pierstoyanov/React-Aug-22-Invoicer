@@ -17,8 +17,10 @@ import 'react-toastify/dist/ReactToastify.css';
 const userAuthContext = createContext('');
 
 export function UserAuthContextProvider({children}) {
-  const [user, setUser] = useState(null);
   const authentication = getAuth(app);
+  const [currentUser, setCurrentUser] = useState();
+  const [loading, setLoading] = useState(true);
+  
   const navigate = useNavigate();
 
   function logIn(email, password) {
@@ -34,15 +36,18 @@ export function UserAuthContextProvider({children}) {
     toast('Logged out successfully!', {position: toast.POSITION.BOTTOM_RIGHT})
     navigate('/login');
   }
-  
-  function thisCurrentUser () {
-    return authentication.currentUser;
+
+  function getAuthenticatedUser() {
+    if (!currentUser) {
+      return null;
+    }
+    return currentUser;
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(authentication, (currentuser) => {
-      //PRINT CURRENT USER
-
+    const unsubscribe = authentication.onAuthStateChanged( (user) => {
+      setCurrentUser(user)
+      setLoading(false)
     });
 
     return () => {
@@ -51,12 +56,13 @@ export function UserAuthContextProvider({children}) {
 
   }, []);
 
+  const value = {
+    currentUser, logIn, signUp, logOut, getAuthenticatedUser, authentication
+  }
 
   return (
-    <userAuthContext.Provider
-      value={{ user, authentication, logIn, signUp, logOut }}
-    >
-      {children}
+    <userAuthContext.Provider value={value}>
+      {!loading && children}
     </userAuthContext.Provider>
   );
 

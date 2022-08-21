@@ -20,27 +20,10 @@ import ResponsiveAppBar from './components/Common/ResponsiveAppBar/ResponsiveApp
 import ProfileForm from './components/Common/ProfileForm/ProfileForm';
 import About from './components/About/About';
 import Homepage from './components/Homepage/Homepage';
+import AddInvoice from './components/Invoice/AddInvoice'
 import { ToastContainer } from 'react-toastify';
 
 function App() {
-
-  //Auth
-
-
-  // const handleLogout = () => {
-  //   sessionStorage.removeItem('Auth Token');
-  //   navigate('/login');
-  // }
-
-  // useEffect(() => {
-  //   let authToken = sessionStorage.getItem('Auth Token');
-
-  //   if (authToken) {
-  //       navigate('/Homepage');
-  //   }
-
-  // }, [])
-
   //Routing
   const navigate = useNavigate();
 
@@ -70,6 +53,7 @@ function App() {
           />
         <Route path="/About" element={<About />} />
         <Route path="/Homepage" element={<Homepage />} />
+        <Route path="/AddInvoice" element={<AddInvoice />} />
       
       </Routes>
       </UserAuthContextProvider>

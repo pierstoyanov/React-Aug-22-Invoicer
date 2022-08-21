@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -6,11 +6,19 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Tooltip  from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
-
-
-const UserMenu = ({navigate, handleLogout}) => {
+import { useUserAuth } from '../../../Contexts/UserAuthContext';
+import { 
+    getAuth, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword,
+    signOut,
+    onAuthStateChanged } 
+    from 'firebase/auth'
+const UserMenu = ({navigate, handleLogout, user}) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    
+    const { isAuthenticated, setIsAuthenticated } = React.useState();
+    const { getAuthenticateUser, currentUser, authentication } = useUserAuth();
+
     //TODO
     //handleCloseUserMenu()
     const handleProfile = () => {
@@ -41,9 +49,23 @@ const UserMenu = ({navigate, handleLogout}) => {
         setAnchorElUser(null);
     };
 
-    
+    // const onLoad = async () => {
+    //     const userExists = await getAuthenticateUser;
+    //     if (userExists) setIsAuthenticated(true);
+    //   };
+
+    // useEffect(() => {
+    //     authentication.onAuthStateChanged();
+    // }, [isAuthenticated]);
+
+    // async function checkUser () {
+
+    //     return await useUserAuth().currentUser
+    // }
     
     return (
+        <>
+        {/* {{isAuthenticated} && */}
         <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -74,6 +96,8 @@ const UserMenu = ({navigate, handleLogout}) => {
         ))}
         </Menu>
         </Box>
+        {/* } */}
+        </>
 )}
 
 export default UserMenu

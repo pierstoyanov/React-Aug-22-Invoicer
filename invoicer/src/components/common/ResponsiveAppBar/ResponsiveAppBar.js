@@ -16,13 +16,13 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import UserMenu from './UserMenu';
 import { useUserAuth } from '../../../Contexts/UserAuthContext';
-import { onAuthStateChanged } from 'firebase/auth'
 
-const pages = ['Login', 'Register', 'About'];
+const pages = ['Login', 'Register', 'About', 'AddInvoice'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const { authentication, user, logOut } = useUserAuth();
+  let user = useUserAuth().currentUser;
+  const { logOut } = useUserAuth();
   const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
@@ -42,24 +42,6 @@ const ResponsiveAppBar = () => {
       console.log(error.message);
     }
   };
-
-  let getcurrentUser = async () => {
-    onAuthStateChanged(authentication, (user) => {
-      //PRINT CURRENT USER
-      console.log(user)
-      if (user === null)
-      {
-        console.log(false)
-        return false;
-      }
-      else {
-        console.log(true)
-        return true;
-      }
-    });
-
-  }
-  const currentUser = getcurrentUser();
 
   return (
     <AppBar position="static" >
@@ -154,7 +136,7 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
         
-          { {currentUser} ? null : <UserMenu navigate={navigate} handleLogout={handleLogout} /> }
+         <UserMenu navigate={navigate} handleLogout={handleLogout} user={user} />
 
         </Toolbar>
       </Container>
