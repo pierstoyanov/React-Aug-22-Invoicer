@@ -22,6 +22,7 @@ import About from './components/About/About';
 import Homepage from './components/Homepage/Homepage';
 import AddInvoice from './components/Invoice/AddInvoice'
 import { ToastContainer } from 'react-toastify';
+import LandingPage from './components/LandingPage/LandingPage';
 
 function App() {
   //Routing
@@ -39,6 +40,8 @@ function App() {
     <main>
       <UserAuthContextProvider>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/LandingPage" element={<LandingPage />} />
         <Route path="/Login" 
           element={<ProfileForm
             title="Login"
@@ -59,17 +62,6 @@ function App() {
       </UserAuthContextProvider>
 
       <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-        >
-        Learn React
-      </a>
     <ToastContainer />
     </main>
     </div>      

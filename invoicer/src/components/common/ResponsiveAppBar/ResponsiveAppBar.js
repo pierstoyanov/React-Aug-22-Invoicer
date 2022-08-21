@@ -17,7 +17,7 @@ import Button from '@mui/material/Button';
 import UserMenu from './UserMenu';
 import { useUserAuth } from '../../../Contexts/UserAuthContext';
 
-const pages = ['Login', 'Register', 'About', 'AddInvoice'];
+const pages = ['LandingPage', 'Login', 'Register', 'About', 'AddInvoice'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);

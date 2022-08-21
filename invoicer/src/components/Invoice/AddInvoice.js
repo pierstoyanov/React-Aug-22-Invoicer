@@ -5,7 +5,7 @@ import logo from '../../logo.svg'
 
 import { db } from "../../Config/firebase.config";
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, OutlinedInput } from "@mui/material";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -26,7 +26,8 @@ const AddInvoice = () => {
         reseiver: reseiver,
         issuer: issuer,
         item: item,
-        price: price        
+        price: price,
+        created: Timestamp.now()        
       })
       onClose()
     } catch (err) {
@@ -41,7 +42,7 @@ const AddInvoice = () => {
 
   return (
     <>    
-    <Box
+    <OutlinedInput 
       component="form"
       sx={{
         '& .MuiTextField-root': { m: 1, width: '25ch' },
@@ -84,7 +85,7 @@ const AddInvoice = () => {
       <Button onClick={handleSubmit} variant="contained" color="success">
         Submit
       </Button>
-    </Box>
+    </OutlinedInput >
     </>
 
   );
