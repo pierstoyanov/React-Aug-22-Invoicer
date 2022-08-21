@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 //React imports
-import { useState, useEffect } from 'react';
+//import { useState, useEffect } from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 
 //Firebase imports
@@ -9,16 +9,18 @@ import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 // import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
 import { UserAuthContextProvider } from './Contexts/UserAuthContext';
 
+import { createTheme, ThemeProvider } from '@mui/material';
 
 //Messages
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+//import { ToastContainer, toast } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
 
 //Components
 import ResponsiveAppBar from './components/Common/ResponsiveAppBar/ResponsiveAppBar';
 import ProfileForm from './components/Common/ProfileForm/ProfileForm';
 import About from './components/About/About';
 import Homepage from './components/Homepage/Homepage';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
 
@@ -38,8 +40,6 @@ function App() {
   //   }
 
   // }, [])
-
-
 
   //Routing
   const navigate = useNavigate();
@@ -86,6 +86,7 @@ function App() {
         >
         Learn React
       </a>
+    <ToastContainer />
     </main>
     </div>      
   );

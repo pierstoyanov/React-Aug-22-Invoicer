@@ -16,14 +16,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '@mui/material/Button';
 import UserMenu from './UserMenu';
 import { useUserAuth } from '../../../Contexts/UserAuthContext';
+import { onAuthStateChanged } from 'firebase/auth'
 
 const pages = ['Login', 'Register', 'About'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const { logOut, user } = useUserAuth();
+  const { authentication, user, logOut } = useUserAuth();
   const navigate = useNavigate();
-  // const userLoggedIn = sessionStorage.getItem('Auth Token')
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -38,12 +38,31 @@ const ResponsiveAppBar = () => {
       await logOut();
       navigate("/About");
     } catch (error) {
+      
       console.log(error.message);
     }
   };
 
+  let getcurrentUser = async () => {
+    onAuthStateChanged(authentication, (user) => {
+      //PRINT CURRENT USER
+      console.log(user)
+      if (user === null)
+      {
+        console.log(false)
+        return false;
+      }
+      else {
+        console.log(true)
+        return true;
+      }
+    });
+
+  }
+  const currentUser = getcurrentUser();
+
   return (
-    <AppBar position="static">
+    <AppBar position="static" >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -63,6 +82,7 @@ const ResponsiveAppBar = () => {
             }}
           >
             INVOICER 
+            {  }
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -133,8 +153,8 @@ const ResponsiveAppBar = () => {
               </Button>
             ))}
           </Box>
-
-          {user ? <UserMenu navigate={navigate} handleLogout={handleLogout}/> : null}
+        
+          { {currentUser} ? null : <UserMenu navigate={navigate} handleLogout={handleLogout} /> }
 
         </Toolbar>
       </Container>

@@ -21,6 +21,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../../Contexts/UserAuthContext";
 import { IconButton } from "@mui/material";
 
+// Messages
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { mapAuthCodeToMessage } from "./authErrorMessages";
+
+import { titleColor, btnColor } from "./profileForm.styles";
+
 const ProfileForm = ({ title, action }) => {
   //actions: login, register 
 
@@ -35,20 +42,37 @@ const ProfileForm = ({ title, action }) => {
     showPassword: false,
   });
 
+
   const handleUserEntry = async (e) => {
     setError('');
 
     //login
     if (action === 'login') {
       try {
-        await signUp(email, password);
+        const responce = await logIn(email, password);
+        toast.success('Logged in successfully', {position: toast.POSITION.BOTTOM_RIGHT})
         navigate("/Homepage");
       } catch (err) {
-        setError(err.message);
+        if (err !== '') {
+          toast.error(mapAuthCodeToMessage(err.code), {position: toast.POSITION.BOTTOM_RIGHT})
+          setError(mapAuthCodeToMessage(err.code))
+        }
       }
     }
 
     //register
+    if (action === 'register') {
+      try {
+        await signUp(email, password);
+        toast.success('Registered successfully', {position: toast.POSITION.BOTTOM_RIGHT})
+        navigate("/Homepage");
+      } catch (err) {
+        if (err !== '') {
+          toast.error(mapAuthCodeToMessage(err.code), {position: toast.POSITION.BOTTOM_RIGHT})
+          setError(mapAuthCodeToMessage(err.code))
+        }
+      }
+    }
 
   };
 
@@ -61,7 +85,7 @@ const ProfileForm = ({ title, action }) => {
   };
   
   const handlePasswordChange = (prop) => (ev) => {
-    console.log(ev.target.value);
+   // console.log(ev.target.value);
     setPassword(ev.target.value);
     setPassVisibility({ ...passVisibility, [prop]: ev.target.value });
   };
@@ -69,16 +93,16 @@ const ProfileForm = ({ title, action }) => {
   return (
     <>
     <div className="heading-container">
-      <h3>
+      <h3 textcolor={btnColor(action)}>
         {title} Page
       </h3>
     </div>
-    <Box 
-      sx={{ '& > :not(style)': { m: 1, display: "flex",
+    <Box sx={{ '& > :not(style)': { 
+      m: 1, 
+      display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      alignmentItems: "center"} }}
-    >
+      alignmentItems: "center"} }}>
     {/* //<BoxStyled> */}
       {error && <Alert variant="danger">{error}</Alert>}
         <FormControl variant="outlined">
@@ -86,7 +110,7 @@ const ProfileForm = ({ title, action }) => {
           <Input
             id="email"
             type="email"
-            required="true"
+            required={ true }
             startAdornment={<InputAdornment position="start">
               <AccountCircle />
               </InputAdornment>}
@@ -104,7 +128,7 @@ const ProfileForm = ({ title, action }) => {
             onChange={handlePasswordChange('password')}
             type={passVisibility.showPassword ? "text" : "password"}
             placeholder="Please enter your password"
-            required="true"
+            required={ true }
             startAdornment={<InputAdornment position="start">
               <AccountCircle />
             </InputAdornment>}
@@ -121,7 +145,7 @@ const ProfileForm = ({ title, action }) => {
             />
         </FormControl>
 
-        <LoginButton title={title} handleUserEntry={handleUserEntry} />
+        <LoginButton title={title} action={action} handleUserEntry={handleUserEntry} />
       {/* //</BoxStyled> */}
       </Box>
       </>

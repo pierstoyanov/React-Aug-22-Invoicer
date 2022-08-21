@@ -12,7 +12,7 @@ const UserMenu = ({navigate, handleLogout}) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     
     //TODO
-    handleCloseUserMenu()
+    //handleCloseUserMenu()
     const handleProfile = () => {
         handleCloseUserMenu()
     }
@@ -24,7 +24,7 @@ const UserMenu = ({navigate, handleLogout}) => {
     }, 
     {
         item: 'Logout',
-        handler: handleLogoutNavbar
+        //handler: handleLogoutNavbar
     }
     ];
 
