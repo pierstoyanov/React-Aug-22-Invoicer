@@ -7,39 +7,30 @@ import MenuItem from '@mui/material/MenuItem';
 import Tooltip  from "@mui/material/Tooltip";
 import Avatar from "@mui/material/Avatar";
 import { useUserAuth } from '../../../Contexts/UserAuthContext';
-import { 
-    getAuth, 
-    signInWithEmailAndPassword, 
-    createUserWithEmailAndPassword,
-    signOut,
-    onAuthStateChanged } 
-    from 'firebase/auth'
-const UserMenu = ({navigate, handleLogout, user}) => {
+
+const UserMenu = ({navigate, logOut, handleLogout, user}) => {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const { isAuthenticated, setIsAuthenticated } = React.useState();
     const { getAuthenticateUser, currentUser, authentication } = useUserAuth();
 
-    //TODO
-    //handleCloseUserMenu()
+
     const handleProfile = () => {
         handleCloseUserMenu()
     }
 
-    const userSettings = [
-    { 
-        item:'Profile', 
-        handler: handleProfile
-    }, 
-    {
-        item: 'Logout',
-        //handler: handleLogoutNavbar
-    }
-    ];
 
     const handleLogoutNavbar = () => {
         handleCloseUserMenu()
         handleLogout()
     }
+
+    const userSettings = [
+    {
+        item: 'Logout',
+        handler: handleLogoutNavbar
+    }
+    ];
+
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -48,20 +39,6 @@ const UserMenu = ({navigate, handleLogout, user}) => {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
-
-    // const onLoad = async () => {
-    //     const userExists = await getAuthenticateUser;
-    //     if (userExists) setIsAuthenticated(true);
-    //   };
-
-    // useEffect(() => {
-    //     authentication.onAuthStateChanged();
-    // }, [isAuthenticated]);
-
-    // async function checkUser () {
-
-    //     return await useUserAuth().currentUser
-    // }
     
     return (
         <>
@@ -90,7 +67,7 @@ const UserMenu = ({navigate, handleLogout, user}) => {
         >
         {/* //onClick={userSettings.handler()  }*/}
         {userSettings.map((setting) => (
-            <MenuItem key={setting.item} onClick={setting.handler}>
+            <MenuItem key={setting.item} onClick={handleLogout}>
             <Typography textAlign="center" >{setting.item}</Typography>
             </MenuItem>
         ))}

@@ -15,7 +15,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import Button from '@mui/material/Button';
 import UserMenu from './UserMenu';
-import { useUserAuth } from '../../../Contexts/UserAuthContext';
+import { useUserAuth } from '../../../Contexts/UserAuthContext.js';
 
 const pages = ['LandingPage', 'Login', 'Register', 'About', 'AddInvoice'];
 
@@ -136,7 +136,7 @@ const ResponsiveAppBar = () => {
             ))}
           </Box>
         
-         <UserMenu navigate={navigate} handleLogout={handleLogout} user={user} />
+         <UserMenu navigate={navigate} handleLogout={handleLogout} logOut={logOut} user={user} />
 
         </Toolbar>
       </Container>
