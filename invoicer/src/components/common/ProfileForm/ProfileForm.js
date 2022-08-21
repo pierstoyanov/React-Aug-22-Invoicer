@@ -22,7 +22,7 @@ import { useUserAuth } from "../../../Contexts/UserAuthContext";
 import { IconButton } from "@mui/material";
 
 // Messages
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { mapAuthCodeToMessage } from "./authErrorMessages";
 
@@ -123,8 +123,6 @@ const ProfileForm = ({ title, action }) => {
           <InputLabel htmlFor="password">Password</InputLabel>
           <Input 
             id="password"
-            //TODO 
-            //see if browers recognizes pass field
             onChange={handlePasswordChange('password')}
             type={passVisibility.showPassword ? "text" : "password"}
             placeholder="Please enter your password"

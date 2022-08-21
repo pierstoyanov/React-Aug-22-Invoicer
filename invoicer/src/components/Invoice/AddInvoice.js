@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../../Contexts/UserAuthContext";
 import logo from '../../logo.svg'
@@ -6,25 +6,38 @@ import logo from '../../logo.svg'
 import { db } from "../../Config/firebase.config";
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { Box, Button, TextField } from "@mui/material";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AddInvoice = () => {
   const { logOut } = useUserAuth();
   let navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault()
-  //   // try {
-  //   //   await addDoc(collection(db, 'invoices'), {
-  //   //     reseiver: receiver,
-  //   //     issuer: issuer,
-  //   //     item: item,
-  //   //     price: price
-  //   //   })
-  //   //   // onClose()
-  //   // } catch (err) {
-  //   //   alert(err)
-  //   }
-  // }
+  const [reseiver, setReseiver] = useState('')
+  const [issuer, setIssuer] = useState('');
+  const [item, setItem] = useState('');
+  const [price, setPrice] = useState('');
+
+
+  const handleSubmit = async (event) => {
+    console.log('clicked')
+    try {
+      await addDoc(collection(db, 'invoices'), {
+        reseiver: reseiver,
+        issuer: issuer,
+        item: item,
+        price: price        
+      })
+      onClose()
+    } catch (err) {
+      toast.error(err.code, {position: toast.POSITION.BOTTOM_RIGHT})
+    }
+  }
+
+  const onClose = () => {
+    console.log('success')
+    toast.success('Successfully Added', {position: toast.POSITION.BOTTOM_RIGHT})
+  }
 
   return (
     <>    
@@ -38,55 +51,39 @@ const AddInvoice = () => {
     >
       <div>
         <TextField
-          error
           id="reseiver"
-          label="reseiver"
-          defaultValue="Hello World"
+          label="Reseiver"
+          value={reseiver}
+          onChange={(e) => {setReseiver(e.target.value);}}
+          placeholder="input Reseiver"
         />
         <TextField
-          error
-          id="outlined-error-helper-text"
-          label="issuer"
-          helperText="Incorrect entry."
+          id="issuer"
+          label="Issuer"
+          value={issuer}
+          onChange={(e) => {setIssuer(e.target.value);}}
+          placeholder="input Issuer"
         />
       </div>
       <div>
         <TextField
-          error
-          id="filled-error"
-          label="Error"
-          defaultValue="Hello World"
-          variant="filled"
+          id="item"
+          label="item"
+          value={item}
+          onChange={(e) => {setItem(e.target.value);}}
+          placeholder="input Item"
         />
         <TextField
-          error
-          id="filled-error-helper-text"
-          label="Error"
-          defaultValue="Hello World"
-          helperText="Incorrect entry."
-          variant="filled"
+          id="price"
+          label="Price"
+          value={price}
+          onChange={(e) => {setPrice(e.target.value);}}
+          placeholder="input Price"
         />
       </div>
-      <div>
-        <TextField
-          error
-          id="standard-error"
-          label="Error"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-        <TextField
-          error
-          id="standard-error-helper-text"
-          label="Error"
-          defaultValue="Hello World"
-          helperText="Incorrect entry."
-          variant="standard"
-        />
-      </div>
-      {/* <Button onClick={handleSubmit} variant="contained" color="success">
+      <Button onClick={handleSubmit} variant="contained" color="success">
         Submit
-      </Button> */}
+      </Button>
     </Box>
     </>
 
